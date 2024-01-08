@@ -34,7 +34,7 @@ public class NFeInStorageService : INFeInStorageService
             {
                 var nfes = await context.NFes.ToListAsync();
                 response.NFes = nfes;
-                response.Message = "Lista de NFes";
+                response.Message = "NFes List";
                 response.StatusCode = 200;
             }
         }

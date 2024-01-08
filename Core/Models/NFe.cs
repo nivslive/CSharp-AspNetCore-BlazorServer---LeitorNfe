@@ -20,6 +20,9 @@ public class NFe
 
 public class InfNFe
 {
+
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "ide")]
     public Ide? Ide { get; set; }
 
@@ -52,6 +55,8 @@ public class InfNFe
 [XmlRoot(ElementName = "fat")]
 public class Fat
 {
+    public int Id {get; set;}
+    
     [XmlElement(ElementName = "nFat")]
     public string? NFat { get; set; }
 
@@ -68,6 +73,8 @@ public class Fat
 [XmlRoot(ElementName = "dup")]
 public class Dup
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "nDup")]
     public string? NDup { get; set; }
 
@@ -81,6 +88,8 @@ public class Dup
 [XmlRoot(ElementName = "cobr")]
 public class Cobr
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "fat")]
     public Fat? Fat { get; set; }
 
@@ -91,6 +100,7 @@ public class Cobr
 [XmlRoot(ElementName = "InfAdic")]
 public class InfAdic 
 {
+    public int Id {get; set;}
     public string? infCpl {get; set;}
 }
 
@@ -123,6 +133,7 @@ public class Ide
 [XmlRoot(ElementName = "enderEmit")]
 public class EnderEmit
 {
+    public int Id {get; set;}
     public string? xLgr { get; set; }
     public string? nro { get; set; }
     public string? xBairro { get; set; }
@@ -138,6 +149,8 @@ public class EnderEmit
 [XmlRoot(ElementName = "emit")]
 public class Emit
 {
+
+    public int Id {get; set;}
     public string? CNPJ { get; set; }
     public string? xNome { get; set; }
     public string? xFant { get; set; }
@@ -149,6 +162,7 @@ public class Emit
 [XmlRoot(ElementName = "enderDest")]
 public class EnderDest
 {
+    public int Id {get; set;}
     public string? xLgr { get; set; }
     public string? nro { get; set; }
     public string? xBairro { get; set; }
@@ -164,6 +178,7 @@ public class EnderDest
 [XmlRoot(ElementName = "dest")]
 public class Dest
 {
+    public int Id {get; set;}
     public string? CPF { get; set; }
     public string? xNome { get; set; }
     public EnderDest? enderDest { get; set; }
@@ -175,6 +190,8 @@ public class Dest
 [XmlRoot(ElementName = "prod")]
 public class Prod
 {
+
+    public int Id {get; set;}
     public string? cProd { get; set; }
     public string? cEAN { get; set; }
     public string? xProd { get; set; }
@@ -196,6 +213,7 @@ public class Prod
 [XmlRoot(ElementName = "det")]
 public class Det
 {
+    public int Id {get; set;}
     [XmlElement(ElementName = "prod")]
     public Prod? Prod { get; set; }
 
@@ -206,6 +224,7 @@ public class Det
 [XmlRoot(ElementName = "imposto")]
 public class Imposto
 {
+    public int Id {get; set;}
     [XmlElement(ElementName = "vTotTrib")]
     public string? VTotTrib { get; set; }
 
@@ -219,6 +238,7 @@ public class Imposto
 [XmlRoot(ElementName = "ICMS")]
 public class ICMS 
 {
+    public int Id {get; set;}
     [XmlElement(ElementName = "ICMSSN102")]
     public ICMSSN102? ICMSSN102 {get;set;}
 }
@@ -227,6 +247,7 @@ public class ICMS
 [XmlRoot(ElementName = "ICMSSN102")]
 public class ICMSSN102 
 {
+    public int Id {get; set;}
     [XmlElement(ElementName = "orig")]
     public string? Orig {get;set;}
 
@@ -235,17 +256,21 @@ public class ICMSSN102
 }
 
 public class IPI {
+    public int Id {get; set;}
     public string? cEnq {get;set;}
     public IPINT? IPINT {get;set;}
 }
 
 public class IPINT {
+    public int Id {get; set;}
     public string? CST {get;set;}
 }
 
 [XmlRoot(ElementName = "infRespTec")]
 public class InfRespTec
 {
+
+    public int Id {get; set;}
     public string? CNPJ { get; set; }
     public string? xContato { get; set; }
     public string? email { get; set; }
@@ -255,6 +280,8 @@ public class InfRespTec
 [XmlRoot(ElementName = "vol")]
 public class Vol
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "qVol")]
     public string? QVol { get; set; }
 }
@@ -262,6 +289,8 @@ public class Vol
 [XmlRoot(ElementName = "transp")]
 public class Transp
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "modFrete")]
     public string? ModFrete { get; set; }
 
@@ -272,6 +301,8 @@ public class Transp
 [XmlRoot(ElementName = "total")]
 public class Total
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "ICMSTot")]
     public ICMSTot? ICMSTot { get; set; }
 }
@@ -279,6 +310,8 @@ public class Total
 [XmlRoot(ElementName = "ICMSTot")]
 public class ICMSTot
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "vBC")]
     public string? VBC { get; set; }
 
@@ -351,6 +384,9 @@ public class ICMSTot
 [XmlRoot(ElementName = "Signature")]
 public class Signature
 {
+    [XmlAttribute(AttributeName = "Id", Namespace = "http://www.w3.org/2000/xmlns/")]
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "SignedInfo")]
     public SignedInfo? SignedInfo { get; set; }
 
@@ -360,14 +396,16 @@ public class Signature
     [XmlElement(ElementName = "KeyInfo")]
     public KeyInfo? KeyInfo { get; set; }
 
-    [XmlAttribute(AttributeName = "Id", Namespace = "http://www.w3.org/2000/xmlns/")]
-    public string Id { get; set; }
+
+
 }
 
 
 [XmlRoot(ElementName = "SignedInfo")]
 public class SignedInfo
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "CanonicalizationMethod")]
     public CanonicalizationMethod? CanonicalizationMethod { get; set; }
 
@@ -380,18 +418,27 @@ public class SignedInfo
 
 public class CanonicalizationMethod
 {
+
+    public int Id {get; set;}
+
     [XmlAttribute(AttributeName = "Algorithm")]
     public string? Algorithm { get; set; }
 }
 
 public class SignatureMethod
 {
+
+    public int Id {get; set;}
+
+
     [XmlAttribute(AttributeName = "Algorithm")]
     public string? Algorithm { get; set; }
 }
 
 public class Reference
 {
+    public int Id {get; set;}
+
     [XmlAttribute(AttributeName = "URI")]
     public string? URI { get; set; }
 
@@ -407,29 +454,39 @@ public class Reference
 
 public class Transforms
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "Transform")]
     public Transform? Transform { get; set; }
 }
 
 public class Transform
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "Algorithm")]
     public string? Algorithm { get; set; }
 }
 
 public class DigestMethod
 {
+    public int Id {get; set;}
+
     [XmlAttribute(AttributeName = "Algorithm")]
     public string? Algorithm { get; set; }
 }
 public class KeyInfo
 {
+    public int Id {get; set;}
+
     [XmlElement(ElementName = "X509Data")]
     public X509Data? X509Data { get; set; }
 }
 
 public class X509Data
 {
+    public int Id {get; set;}
+    
     [XmlElement(ElementName = "X509Certificate")]
     public string? X509Certificate { get; set; }
 }
