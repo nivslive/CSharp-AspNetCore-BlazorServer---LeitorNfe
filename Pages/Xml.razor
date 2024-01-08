@@ -1,0 +1,201 @@
+﻿@page "/xml"
+@inject ILogger<Index> Logger
+@inject IXmlService XmlService
+@using LeitorNfe.Core.Models
+@using LeitorNfe.Core.Services
+@using System.Xml.Serialization
+@using LeitorNfe.Components
+@* <PageTitle>File Upload</PageTitle> *@
+
+
+<p>
+    <label>
+        Max file size: @maxFileSize
+        @* <input type="number" @bind="maxFileSize" /> *@
+    </label>
+</p>
+
+<p>
+    <label>
+        Max allowed files: @maxAllowedFiles
+        @* <input type="number" @bind="maxAllowedFiles" /> *@
+    </label>
+</p>
+
+<p>
+    <label>
+        Upload up to @maxAllowedFiles of up to @maxFileSize bytes:
+        <InputFile OnChange="@LoadFiles"/>
+    </label>
+</p>
+
+
+@if(SwitchWarningModal)
+{
+    <WarningModal Message="@MessageWarningModal"  Type="@WarningTypeSelected"/>
+}
+
+@if (xmlData != null)
+{
+    <div>
+        <h4>Parsed XML Data:</h4>
+        <ul>
+            @foreach (var nfe in xmlData.Select(x => x.InfNFe))
+            {
+            <li>
+                <ul>
+                    <li>Id: @nfe.Ide.Id</li>
+                    <li>cUF: @nfe.Ide.cUF</li>
+                    <li>cNF: @nfe.Ide.cNF</li>
+
+                    <li>Emitente: @nfe.Emit.xNome</li>
+                    <li>Destinatário: @nfe.Dest.xNome</li>
+
+                    <li>Produtos:
+                        <ul>
+                            @foreach (var det in nfe.Det)
+                            {
+                                <li>
+                                    <ul>
+                                        <li>cProd: @det.Prod.cProd</li>
+                                        <li>xProd: @det.Prod.xProd</li>
+                                        <li>qCom: @det.Prod.qCom</li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+
+                    <li>Total:
+                        <ul>
+                            <li>vProd: @nfe.Total.ICMSTot.VProd</li>
+                            <li>vFrete: @nfe.Total.ICMSTot.VFrete</li>
+                            @* Adicione outras propriedades da classe ICMSTot aqui *@
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            }
+        </ul>
+    </div>
+
+    <button class="btn btn-primary" @onclick="@(() => SaveNFe())">Salvar</button>
+}
+else
+{
+    <p>No XML data available. Please upload an XML file.</p>
+}
+
+
+@code {
+    private List<NFe>? xmlData;
+    private string? uploadedFileName;
+
+    //[Inject] private IXmlService xmlService { get; set; }
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 1;
+    private bool isLoading;
+
+
+
+    // WarningModal
+    private bool SwitchWarningModal {get; set;} = false;
+    private string MessageWarningModal {get; set;} = "";
+
+    private LeitorNfe.Components.WarningModal.WarningType WarningType;
+
+    private LeitorNfe.Components.WarningModal.WarningType WarningTypeSelected {get; set;}
+
+
+    private void OpenWarningModal()
+    {
+
+    }
+
+    private void CloseWarningModal()
+    {
+
+    }
+    private async void SaveNFe()
+    {
+        try
+        {
+            foreach (var file in loadedFiles)
+            {
+                var filePath = GetFilePath();
+                
+                // Cria o diretório se não existir
+                Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+
+                using var stream = file.OpenReadStream();
+                using var reader = new StreamReader(stream);
+                var xmlString = await reader.ReadToEndAsync();
+
+                // Salva o arquivo
+                await File.WriteAllTextAsync(filePath, xmlString);
+            }
+
+            Console.WriteLine("NFe saved successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving NFe: {ex.Message}");
+        }
+    }
+
+    private string GetFilePath()
+    {
+        string folderPath = "wwwroot/storage/nfe";
+        return Path.Combine(folderPath, GetUniqueFileName(folderPath, "xml"));
+    }
+
+    private string SerializeNFe(List<NFe> nfeList)
+    {
+        var serializer = new XmlSerializer(typeof(List<NFe>));
+
+        using (var writer = new StringWriter())
+        {
+            serializer.Serialize(writer, nfeList);
+            return writer.ToString();
+        }
+    }
+
+    private string GetUniqueFileName(string folderPath, string extension)
+    {
+        int number = 1;
+        string newFileName = $"{number}.{extension}";
+        while (File.Exists(Path.Combine(folderPath, newFileName)))
+        {
+            number++;
+            newFileName = $"{number}.{extension}";
+        }
+        return newFileName;
+    }
+
+    private async void LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                loadedFiles.Add(file);
+                uploadedFileName = e.File.Name;
+                using var stream = e.File.OpenReadStream();
+                using var reader = new StreamReader(stream);
+                var xmlString = await reader.ReadToEndAsync();
+                xmlData = XmlService.ReadXMLAndConvertToObject(xmlString);
+                Console.WriteLine(xmlData);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {FileName} Error: {Error}", 
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
+    }
+}
