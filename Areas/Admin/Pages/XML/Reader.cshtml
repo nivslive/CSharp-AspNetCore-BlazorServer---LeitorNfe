@@ -1,0 +1,52 @@
+@* @page "/admin/XML/reader"
+
+@inject XmlService xmlService
+@using LeitorNfe.Core.Models;
+@using LeitorNfe.Core.Services;
+<h3>XML Reader</h3>
+
+<button @onclick="ReadXml">Read XML</button>
+
+@if (xmlData != null)
+{
+    <div>
+        <p>Número da Nota: @xmlModel.ide.nNF</p>
+        <p>Chave de Acesso: @xmlModel.ide.chNFe</p>
+    </div>
+}
+
+@code {
+    private List<NFe> xmlData;
+    private string uploadedFileName;
+
+    [Inject] private IXmlService XmlService { get; set; }
+    private List<IBrowserFile> loadedFiles = new();
+    private long maxFileSize = 1024 * 15;
+    private int maxAllowedFiles = 3;
+    private bool isLoading;
+
+    private async void LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                loadedFiles.Add(file);
+                uploadedFileName = e.File.Name;
+                using var stream = e.File.OpenReadStream();
+                using var reader = new StreamReader(stream);
+                var xmlString = await reader.ReadToEndAsync();
+                xmlData = XmlService.ReadXMLAndConvertToObject(xmlString);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("File: {FileName} Error: {Error}", 
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
+    }
+} *@
