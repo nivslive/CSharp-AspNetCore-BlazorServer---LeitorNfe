@@ -69,3 +69,4 @@
 /Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/obj/Debug/net8.0/LeitorNfe.pdb
 /Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/obj/Debug/net8.0/LeitorNfe.genruntimeconfig.cache
 /Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/obj/Debug/net8.0/ref/LeitorNfe.dll
+/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/obj/Debug/net8.0/LeitorNfe.sourcelink.json
