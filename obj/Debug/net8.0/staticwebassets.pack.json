@@ -105,6 +105,10 @@
       "PackagePath": "staticwebassets/storage/nfe/4.xml"
     },
     {
+      "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/5.xml",
+      "PackagePath": "staticwebassets/storage/nfe/5.xml"
+    },
+    {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.LeitorNfe.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

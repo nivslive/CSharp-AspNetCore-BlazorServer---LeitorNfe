@@ -9,6 +9,8 @@ namespace LeitorNfe.Core.Models;
 [XmlRoot(ElementName = "NFe", Namespace = "http://www.portalfiscal.inf.br/nfe")]
 public class NFe
 {
+    public int Id {get; set;}
+    
     [XmlElement(ElementName = "infNFe")]
     public InfNFe? InfNFe { get; set; }
 

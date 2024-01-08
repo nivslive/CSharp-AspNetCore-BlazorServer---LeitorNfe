@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "k6dY9Yxm51j/YOcPqoRsYUIKnUYFxkODblbeYWvlw8g=",
+  "Hash": "eW5f+Jiq8cDcrMXaBMuoEUNTcADnkEQn09dF4rW4qgI=",
   "Source": "LeitorNfe",
   "BasePath": "_content/LeitorNfe",
   "Mode": "Default",
@@ -433,6 +433,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/storage/nfe/4.xml"
+    },
+    {
+      "Identity": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/5.xml",
+      "SourceId": "LeitorNfe",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/",
+      "BasePath": "_content/LeitorNfe",
+      "RelativePath": "storage/nfe/5.xml",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/storage/nfe/5.xml"
     },
     {
       "Identity": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/XML/000000024.xml",
