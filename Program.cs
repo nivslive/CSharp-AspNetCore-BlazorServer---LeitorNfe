@@ -1,4 +1,5 @@
 using LeitorNfe.Data;
+using LeitorNfe.Core.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,10 +9,11 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 
-builder.Services.AddScoped<LeitorNfe.Core.Services.IXmlService, LeitorNfe.Core.Services.XmlService>();
+builder.Services.AddScoped<IXmlService, XmlService>();
+builder.Services.AddScoped<INFeInStorageService, NFeInStorageService>();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContextFactory<DataContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
@@ -22,7 +24,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
+app.UseDeveloperExceptionPage();
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();

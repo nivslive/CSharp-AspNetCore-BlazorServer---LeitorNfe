@@ -1,7 +1,9 @@
 ﻿@page "/xml"
 @inject ILogger<Index> Logger
 @inject IXmlService XmlService
+@inject INFeInStorageService NFeInStorageService
 @using LeitorNfe.Core.Models
+@using LeitorNfe.Core.Models.DTOs
 @using LeitorNfe.Core.Services
 @using System.Xml.Serialization
 @using LeitorNfe.Components
@@ -79,7 +81,7 @@
         </ul>
     </div>
 
-    <button class="btn btn-primary" @onclick="@(() => SaveNFe())">Salvar</button>
+    <button class="btn btn-primary" @onclick="@SaveNFe">Salvar</button>
 }
 else
 {
@@ -91,11 +93,13 @@ else
     private List<NFe>? xmlData;
     private string? uploadedFileName;
 
+    private AddNFeInStorageForm AddNFeInStorageForm;
     //[Inject] private IXmlService xmlService { get; set; }
     private List<IBrowserFile> loadedFiles = new();
     private long maxFileSize = 1024 * 15;
     private int maxAllowedFiles = 1;
     private bool isLoading;
+    
 
 
 
@@ -132,8 +136,17 @@ else
                 using var reader = new StreamReader(stream);
                 var xmlString = await reader.ReadToEndAsync();
 
-                // Salva o arquivo
+
                 await File.WriteAllTextAsync(filePath, xmlString);
+                
+                var NFeObject = XmlService.ReadXMLAndConvertToObject(xmlString);
+                Console.WriteLine($"Test filePath: {filePath}");
+                AddNFeInStorageForm addNFeInStorageForm = new(){
+                    NFe = NFeObject.First(),
+                    Directory = filePath,
+                };
+
+                await NFeInStorageService.AddNFe(addNFeInStorageForm);
             }
 
             Console.WriteLine("NFe saved successfully!");

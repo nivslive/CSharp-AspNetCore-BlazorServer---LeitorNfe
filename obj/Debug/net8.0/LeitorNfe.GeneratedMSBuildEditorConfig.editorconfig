@@ -34,8 +34,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXgucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Pages/Xml.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvWG1sLnJhem9y
+[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Pages/NFeSavedListInStorage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTkZlU2F2ZWRMaXN0SW5TdG9yYWdlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Pages/XmlReaderAndSaveInStorage.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvWG1sUmVhZGVyQW5kU2F2ZUluU3RvcmFnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Shared/SurveyPrompt.razor]
@@ -53,10 +57,6 @@ build_metadata.AdditionalFiles.CssScope = b-kb41gkf8qd
 [/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Shared/NavMenu.razor]
 build_metadata.AdditionalFiles.TargetPath = U2hhcmVkL05hdk1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = b-zcn1i7o744
-
-[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Areas/Admin/Pages/XML/Reader.cshtml]
-build_metadata.AdditionalFiles.TargetPath = QXJlYXMvQWRtaW4vUGFnZXMvWE1ML1JlYWRlci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Pages/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s

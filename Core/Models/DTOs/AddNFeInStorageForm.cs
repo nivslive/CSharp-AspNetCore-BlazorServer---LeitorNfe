@@ -11,5 +11,7 @@ public class AddNFeInStorageForm
 
     [Required]
 
-    public string directory {get; set;}
+    public string Directory {get; set;}
+
+    public string? Comentary {get; set;}
 }

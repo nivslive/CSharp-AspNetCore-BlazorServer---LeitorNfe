@@ -1,4 +1,4 @@
-namespace blazor.Services;
+namespace LeitorNfe.Core.Services;
 
 using System.Threading.Tasks;
 using LeitorNfe.Data;
@@ -6,11 +6,11 @@ using LeitorNfe.Core.Models;
 using LeitorNfe.Core.Models.DTOs;
 using LeitorNfe.Core.Services.Responses;
 using Microsoft.EntityFrameworkCore;
-
+using System.Threading.Tasks;
 public interface INFeInStorageService
 {
-    Task<GetNFesResponse> GetNFes();
-    Task<AddNFeResponse> AddNFe(AddNFeInStorageForm AddNFeForm);
+    Task<GetNFesInStorageResponse> GetNFes();
+    Task<AddNFeInStorageResponse> AddNFe(AddNFeInStorageForm AddNFeForm);
     Task<BaseResponse> DeleteNFe(NFe nfe);
     Task<UpdateNFeResponse> UpdateNFe(NFe nfe);
     Task<GetNFeResponse> GetNFe(int id);
@@ -25,24 +25,24 @@ public class NFeInStorageService : INFeInStorageService
         _factory = factory;
     }
 
-    public async Task<GetNFesResponse> GetNFes()
+    public async Task<GetNFesInStorageResponse> GetNFes()
     {
-        var response = new GetNFesResponse();
+        var response = new GetNFesInStorageResponse();
         try 
         {
             using (var context = _factory.CreateDbContext())
             {
-                var nfes = await context.NFes.ToListAsync();
-                response.NFes = nfes;
-                response.Message = "NFes List";
+                var nfes = await context.NFesInStorage.Include(m => m.NFe).ToListAsync();
+                response.NFesInStorage = nfes;
+                response.Message = "NFes saved on storage List";
                 response.StatusCode = 200;
             }
         }
         catch (Exception ex)
         {
-            response.NFes = null;
+            response.NFesInStorage = null;
             response.StatusCode = 500;
-            response.Message = "Error Retrieving NFe: " + ex.Message;
+            response.Message = "Error Retrieving NFes: " + ex.Message;
         }
 
         return response;
@@ -63,7 +63,7 @@ public class NFeInStorageService : INFeInStorageService
             }
             else
             {
-                response.StatusCode = 404; // Not Found
+                response.StatusCode = 404;
                 response.Message = "NFe not found.";
             }
         }
@@ -132,17 +132,19 @@ public class NFeInStorageService : INFeInStorageService
         return response;
     }
 
-    public async Task<AddNFeResponse> AddNFe(AddNFeInStorageForm form)
+    public async Task<AddNFeInStorageResponse> AddNFe(AddNFeInStorageForm form)
     {
-        var response = new AddNFeResponse();
+        var response = new AddNFeInStorageResponse();
         try
         {
             using (var context = _factory.CreateDbContext())
             {
-                context.Add(new NFe
-                {
-                    // aqui coloque todos os inputs necessarios.
+                context.Add(new NFeInStorage {
+                    NFe = form.NFe,
+                    Directory = form.Directory,
+                    Comentary = "",
                 });
+
 
                 var result = await context.SaveChangesAsync();
 

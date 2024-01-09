@@ -1,0 +1,51 @@
+@page "/list"
+@using LeitorNfe.Core.Models
+@using LeitorNfe.Core.Models.DTOs
+@using LeitorNfe.Core.Services
+@using LeitorNfe.Core.Services.Responses
+@using Microsoft.AspNetCore.Mvc
+
+<h3>NFe In Storage List</h3>
+
+@if (nFesInStorage != null && nFesInStorage.Any())
+{
+    <ul>
+        @foreach (var nfe in nFesInStorage)
+        {
+            <li>@nfe.Directory</li>
+        <ul>
+            @if (nfe.NFe != null)
+            {
+                <ul>
+                    <li>
+                        <ul>
+                            <li>Id: @(nfe.NFe.Id)</li>
+                        </ul>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <p>NFe is null for this item.</p>
+            }
+        </ul>
+        }
+    </ul>
+}
+else
+{
+    <p>No NFes in storage.</p>
+}
+
+@code {
+    [Inject] private INFeInStorageService NFeInStorageService {get; set;}
+    private List<NFeInStorage> nFesInStorage;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await NFeInStorageService.GetNFes();
+        nFesInStorage = response?.NFesInStorage;
+        nFesInStorage = nFesInStorage.ToList();
+   }
+}
