@@ -20,6 +20,50 @@
                     <li>
                         <ul>
                             <li>Id: @(nfe.NFe.Id)</li>
+                        @if (nfe.NFe.InfNFe != null)    
+                        {
+                            @if (nfe.NFe.InfNFe.Ide != null) 
+                            {
+                                <li>cUF: @nfe.NFe.InfNFe.Ide.cUF</li>
+                                <li>cNF: @nfe.NFe.InfNFe.Ide.cNF</li>  
+                            }
+
+                            @if (nfe.NFe.InfNFe.Emit != null) 
+                            {
+                                <li>Emitente: @nfe.NFe.InfNFe.Emit.xNome</li>
+                            }
+                            else
+                            {
+                                <li>Não tem emitente.</li>
+                            }
+                            
+                            @if (nfe.NFe.InfNFe.Dest != null) 
+                            {
+                                <li>Destinatário: @nfe.NFe.InfNFe.Dest.xNome</li>
+                            }
+                            else 
+                            {
+                                <li>Não tem destinatário.</li>
+                            }
+
+                            <li>Produtos:
+                                <ul>
+                                    @if (nfe.NFe.InfNFe.Det != null) 
+                                    {
+                                        @foreach (var det in nfe.NFe.InfNFe.Det)
+                                        {
+                                            <li>
+                                                <ul>
+                                                    <li>cProd: @det.Prod.cProd</li>
+                                                    <li>xProd: @det.Prod.xProd</li>
+                                                    <li>qCom: @det.Prod.qCom</li>
+                                                </ul>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </li> 
+                        }
                         </ul>
                     </li>
                 </ul>

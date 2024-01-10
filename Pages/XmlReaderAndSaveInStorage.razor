@@ -9,7 +9,6 @@
 @using LeitorNfe.Components
 @* <PageTitle>File Upload</PageTitle> *@
 
-
 <p>
     <label>
         Max file size: @maxFileSize
@@ -36,6 +35,8 @@
 {
     <WarningModal Message="@MessageWarningModal"  Type="@WarningTypeSelected"/>
 }
+
+
 
 @if (xmlData != null)
 {
@@ -80,7 +81,10 @@
             }
         </ul>
     </div>
-
+    <div>
+        <label>Comentário:</label>
+        <input type="text" @bind="Comentary">
+    </div>
     <button class="btn btn-primary" @onclick="@SaveNFe">Salvar</button>
 }
 else
@@ -100,7 +104,7 @@ else
     private int maxAllowedFiles = 1;
     private bool isLoading;
     
-
+    private string Comentary;
 
 
     // WarningModal
@@ -144,6 +148,7 @@ else
                 AddNFeInStorageForm addNFeInStorageForm = new(){
                     NFe = NFeObject.First(),
                     Directory = filePath,
+                    Comentary = Comentary
                 };
 
                 await NFeInStorageService.AddNFe(addNFeInStorageForm);
@@ -201,6 +206,7 @@ else
                 var xmlString = await reader.ReadToEndAsync();
                 xmlData = XmlService.ReadXMLAndConvertToObject(xmlString);
                 Console.WriteLine(xmlData);
+                StateHasChanged();
             }
             catch (Exception ex)
             {

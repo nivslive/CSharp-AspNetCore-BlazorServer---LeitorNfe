@@ -32,7 +32,56 @@ public class NFeInStorageService : INFeInStorageService
         {
             using (var context = _factory.CreateDbContext())
             {
-                var nfes = await context.NFesInStorage.Include(m => m.NFe).ToListAsync();
+                var nfes = await context.NFesInStorage
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Ide)  // Inclui a propriedade de navegação Ide dentro de InfNfe
+                    
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Emit)  // Inclui a propriedade de navegação Emit dentro de InfNfe
+    
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Dest)  // Inclui a propriedade de navegação Dest dentro de InfNfe
+
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Det)   // Inclui a propriedade de navegação Det dentro de InfNfe
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Det)   // Inclui a propriedade de navegação Det dentro de InfNfe
+                    .ThenInclude(n => n.Prod)   // Inclui a propriedade de navegação Prod dentro de Det
+
+
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Total) // Inclui a propriedade de navegação Total dentro de InfNfe
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Transp) // Inclui a propriedade de navegação Transp dentro de InfNfe
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.Cobr)   // Inclui a propriedade de navegação Cobr dentro de InfNfe
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.InfAdic)  // Inclui a propriedade de navegação InfAdic dentro de InfNfe
+
+                    .Include(m => m.NFe)
+                    .ThenInclude(m => m.InfNFe)
+                    .ThenInclude(n => n.InfRespTec)  // Inclui a propriedade de navegação InfRespTec dentro de InfNfe
+
+
+                    .ToListAsync();
+
+
                 response.NFesInStorage = nfes;
                 response.Message = "NFes saved on storage List";
                 response.StatusCode = 200;
@@ -142,7 +191,7 @@ public class NFeInStorageService : INFeInStorageService
                 context.Add(new NFeInStorage {
                     NFe = form.NFe,
                     Directory = form.Directory,
-                    Comentary = "",
+                    Comentary = form.Comentary,
                 });
 
 
