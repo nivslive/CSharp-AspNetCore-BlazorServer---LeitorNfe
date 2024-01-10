@@ -85,14 +85,30 @@
         <label>Comentário:</label>
         <input type="text" @bind="Comentary">
     </div>
-    <button class="btn btn-primary" @onclick="@SaveNFe">Salvar</button>
+    <button class="btn btn-primary" @onclick="@OpenConfirmationSaveModal">Salvar</button>
 }
 else
 {
     <p>No XML data available. Please upload an XML file.</p>
 }
 
+@if(AreYouSureAboutSaveThisNFe)
+{
+    <Modal>
+        <HeaderContent>
+            <h5 class="modal-title">Salvamento da NFe</h5>
+            <button type="button" class="close" @onclick="CloseConfirmationSaveModal">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </HeaderContent>
 
+        <BodyContent>
+            <h4>Você tem certeza que gostaria de salvar esse NFe?</h4>
+            <button class="btn btn-primary"  @onclick="@SaveNFe">Sim</button> <button class="btn btn-danger" @onclick="@CloseConfirmationSaveModal">Não</button>
+        </BodyContent>
+
+    </Modal>
+}
 @code {
     private List<NFe>? xmlData;
     private string? uploadedFileName;
@@ -106,6 +122,9 @@ else
     
     private string Comentary;
 
+
+    //Modal About Confirmation Saving
+    private bool AreYouSureAboutSaveThisNFe = false;
 
     // WarningModal
     private bool SwitchWarningModal {get; set;} = false;
@@ -164,10 +183,10 @@ else
                 };
 
                 await NFeInStorageService.AddNFe(addNFeInStorageForm);                
-                ActivateOpenWarningModal("NFe salvo no Storage.", 
-                    WarningModal.WarningType.Success);
-            }
 
+            }
+            ActivateOpenWarningModal("NFe salvo no Storage.", 
+                WarningModal.WarningType.Success);
             Console.WriteLine("NFe saved successfully!");
         }
         catch (Exception ex)
@@ -176,6 +195,7 @@ else
                 WarningModal.WarningType.Error);
             Console.WriteLine($"Error saving NFe: {ex.Message}");
         }
+        CloseConfirmationSaveModal();
     }
 
     private string GetFilePath()
@@ -221,7 +241,6 @@ else
                 using var reader = new StreamReader(stream);
                 var xmlString = await reader.ReadToEndAsync();
                 xmlData = XmlService.ReadXMLAndConvertToObject(xmlString);
-                Console.WriteLine(xmlData);
                 StateHasChanged();
             }
             catch (Exception ex)
@@ -232,5 +251,17 @@ else
         }
 
         isLoading = false;
+    }
+
+    public void OpenConfirmationSaveModal()
+    {
+        AreYouSureAboutSaveThisNFe = true;
+        StateHasChanged();
+    }
+
+    public void CloseConfirmationSaveModal()
+    {
+        AreYouSureAboutSaveThisNFe = false;
+        StateHasChanged();
     }
 }

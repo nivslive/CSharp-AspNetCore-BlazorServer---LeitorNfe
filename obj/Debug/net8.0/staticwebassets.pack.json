@@ -225,6 +225,26 @@
       "PackagePath": "staticwebassets/storage/nfe/4.xml"
     },
     {
+      "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/40.xml",
+      "PackagePath": "staticwebassets/storage/nfe/40.xml"
+    },
+    {
+      "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/41.xml",
+      "PackagePath": "staticwebassets/storage/nfe/41.xml"
+    },
+    {
+      "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/42.xml",
+      "PackagePath": "staticwebassets/storage/nfe/42.xml"
+    },
+    {
+      "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/43.xml",
+      "PackagePath": "staticwebassets/storage/nfe/43.xml"
+    },
+    {
+      "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/44.xml",
+      "PackagePath": "staticwebassets/storage/nfe/44.xml"
+    },
+    {
       "Id": "/Users/nivs/Documents/prog/C#/Tests/LeitorNfe/LeitorNfe/wwwroot/storage/nfe/5.xml",
       "PackagePath": "staticwebassets/storage/nfe/5.xml"
     },
