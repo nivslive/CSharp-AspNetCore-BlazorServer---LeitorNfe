@@ -1,0 +1,5 @@
+SELECT TOP (1000) [Id]
+      ,[NFeId]
+      ,[Directory]
+      ,[Comentary]
+  FROM [leitornfe].[dbo].[NFesInStorage]
