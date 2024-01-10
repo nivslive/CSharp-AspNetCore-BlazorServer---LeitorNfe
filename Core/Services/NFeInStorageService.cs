@@ -12,7 +12,7 @@ public interface INFeInStorageService
     Task<GetNFesInStorageResponse> GetNFes();
     Task<AddNFeInStorageResponse> AddNFe(AddNFeInStorageForm AddNFeForm);
     Task<BaseResponse> DeleteNFe(NFe nfe);
-    Task<UpdateNFeResponse> UpdateNFe(NFe nfe);
+    Task<UpdateNFeInStorageResponse> UpdateNFe(EditNFeInStorageForm nfe);
     Task<GetNFeResponse> GetNFe(int id);
 }
 
@@ -152,31 +152,31 @@ public class NFeInStorageService : INFeInStorageService
     }
 
 
-    public async Task<UpdateNFeResponse> UpdateNFe(NFe nfe)
+    public async Task<UpdateNFeInStorageResponse> UpdateNFe(EditNFeInStorageForm nfe)
     {
-        UpdateNFeResponse response = new();
+        UpdateNFeInStorageResponse response = new();
 
         try
         {
             using var context = _factory.CreateDbContext();
-            context.Update(nfe);
+            context.Update(nfe.NFeInStorage);
             var result = await context.SaveChangesAsync();
             if(result == 1)
             {
-                response.NFe = nfe;
+                response.NFeInStorage = nfe.NFeInStorage;
                 response.StatusCode = 200;
                 response.Message = "NFe updated succesfully!";
             }
             else
             {
-                response.NFe = null;
+                response.NFeInStorage = null;
                 response.StatusCode = 400;
                 response.Message = "Error while updating NFe.";                    
             }
         } catch(Exception ex)
         {
             response.StatusCode = 500;
-            response.Message = $"Error Updating NFe of Id: {nfe.Id} | Error message:" + ex.Message;
+            response.Message = $"Error Updating NFe of Id: {nfe.NFeInStorage.NFe.Id} | Error message:" + ex.Message;
         }
         return response;
     }
@@ -193,8 +193,7 @@ public class NFeInStorageService : INFeInStorageService
                     Directory = form.Directory,
                     Comentary = form.Comentary,
                 });
-
-
+                
                 var result = await context.SaveChangesAsync();
 
                 if(result == 1)

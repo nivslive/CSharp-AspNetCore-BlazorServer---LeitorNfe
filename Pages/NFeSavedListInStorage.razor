@@ -127,6 +127,7 @@ else
     private List<NFeInStorage> nFesInStorage;
     private NFeInStorage selectedNFe;
 
+
     protected override async Task OnInitializedAsync()
     {
         var response = await NFeInStorageService.GetNFes();
@@ -143,4 +144,7 @@ else
     {
         selectedNFe = null;
     }
+
+
+
 }

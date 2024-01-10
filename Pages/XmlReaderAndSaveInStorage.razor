@@ -33,7 +33,7 @@
 
 @if(SwitchWarningModal)
 {
-    <WarningModal Message="@MessageWarningModal"  Type="@WarningTypeSelected"/>
+    <WarningModal Message="@MessageWarningModal"  Type="@WarningType"/>
 }
 
 
@@ -97,6 +97,8 @@ else
     private List<NFe>? xmlData;
     private string? uploadedFileName;
 
+    private LeitorNfe.Utils.XMLUtils XMLUtils;
+
     private AddNFeInStorageForm AddNFeInStorageForm;
     //[Inject] private IXmlService xmlService { get; set; }
     private List<IBrowserFile> loadedFiles = new();
@@ -110,20 +112,30 @@ else
     // WarningModal
     private bool SwitchWarningModal {get; set;} = false;
     private string MessageWarningModal {get; set;} = "";
+    private WarningModal.WarningType WarningType;
 
-    private LeitorNfe.Components.WarningModal.WarningType WarningType;
+    private async Task ActivateOpenWarningModal(string message, 
+        WarningModal.WarningType  type)
+    {   
+        OpenWarningModal(message, type);
+        await Task.Delay(3000);
+        CloseWarningModal();
+    }
 
-    private LeitorNfe.Components.WarningModal.WarningType WarningTypeSelected {get; set;}
-
-
-    private void OpenWarningModal()
+    private void OpenWarningModal(string message, 
+        WarningModal.WarningType type)
     {
-
+        WarningType = type;
+        SwitchWarningModal = true;
+        MessageWarningModal = message;
+        StateHasChanged();
     }
 
     private void CloseWarningModal()
     {
-
+        SwitchWarningModal = false;
+        MessageWarningModal = "";
+        StateHasChanged();
     }
     private async void SaveNFe()
     {
@@ -131,41 +143,40 @@ else
         {
             foreach (var file in loadedFiles)
             {
-                var filePath = GetFilePath();
+                var filePath = XMLUtils.GetFilePath();
                 
                 // Cria o diretório se não existir
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                using var stream = file.OpenReadStream();
-                using var reader = new StreamReader(stream);
+                var stream = file.OpenReadStream();
+                var reader = new StreamReader(stream);
                 var xmlString = await reader.ReadToEndAsync();
 
 
                 await File.WriteAllTextAsync(filePath, xmlString);
                 
                 var NFeObject = XmlService.ReadXMLAndConvertToObject(xmlString);
-                Console.WriteLine($"Test filePath: {filePath}");
+                
                 AddNFeInStorageForm addNFeInStorageForm = new(){
-                    NFe = NFeObject.First(),
-                    Directory = filePath,
-                    Comentary = Comentary
+                   NFe = xmlData.First(),
+                   Directory = filePath,
+                   Comentary = Comentary
                 };
 
                 await NFeInStorageService.AddNFe(addNFeInStorageForm);
+
+                ActivateOpenWarningModal("NFe salvo no Storage.", 
+                    LeitorNfe.Components.WarningModal.WarningType.Success);
             }
 
             Console.WriteLine("NFe saved successfully!");
         }
         catch (Exception ex)
         {
+            ActivateOpenWarningModal($"Error saving NFe: {ex.Message}", 
+                LeitorNfe.Components.WarningModal.WarningType.Error);
             Console.WriteLine($"Error saving NFe: {ex.Message}");
         }
-    }
-
-    private string GetFilePath()
-    {
-        string folderPath = "wwwroot/storage/nfe";
-        return Path.Combine(folderPath, GetUniqueFileName(folderPath, "xml"));
     }
 
     private string SerializeNFe(List<NFe> nfeList)
@@ -179,17 +190,7 @@ else
         }
     }
 
-    private string GetUniqueFileName(string folderPath, string extension)
-    {
-        int number = 1;
-        string newFileName = $"{number}.{extension}";
-        while (File.Exists(Path.Combine(folderPath, newFileName)))
-        {
-            number++;
-            newFileName = $"{number}.{extension}";
-        }
-        return newFileName;
-    }
+
 
     private async void LoadFiles(InputFileChangeEventArgs e)
     {

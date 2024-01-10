@@ -26,6 +26,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9JbmZvTkZlRWRpdE1vZGFsLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Components/InputFileXml.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9JbnB1dEZpbGVYbWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Components/Modal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Nb2RhbC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
