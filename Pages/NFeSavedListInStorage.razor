@@ -4,7 +4,7 @@
 @using LeitorNfe.Core.Services
 @using LeitorNfe.Core.Services.Responses
 @using Microsoft.AspNetCore.Mvc
-
+@using Microsoft.AspNetCore.Components
 <h3>NFe In Storage List</h3>
 
 @if (nFesInStorage != null && nFesInStorage.Any())
@@ -12,7 +12,7 @@
     <ul>
         @foreach (var nfe in nFesInStorage)
         {   <ul class="py-3" style="border-bottom: 1px solid gray">
-                <button class="btn btn-primary">Editar</button>
+                <button class="btn btn-primary" @onclick="(e => EditNFe(nfe))">Editar</button>
                 <li>Diretório: @nfe.Directory</li>
                 <li>
                     @if (!string.IsNullOrEmpty(nfe.Comentary))
@@ -98,15 +98,48 @@ else
     <p>No NFes in storage.</p>
 }
 
-@code {
-    [Inject] private INFeInStorageService NFeInStorageService {get; set;}
-    private List<NFeInStorage> nFesInStorage;
 
+@if (selectedNFe != null)
+{
+    <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalhes da NFe</h5>
+                    <button type="button" class="close" @onclick="CloseModal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseModal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Inject] private INFeInStorageService NFeInStorageService { get; set; }
+    private List<NFeInStorage> nFesInStorage;
+    private NFeInStorage selectedNFe;
 
     protected override async Task OnInitializedAsync()
     {
         var response = await NFeInStorageService.GetNFes();
         nFesInStorage = response?.NFesInStorage;
         nFesInStorage = nFesInStorage.ToList();
-   }
+    }
+
+    public void EditNFe(NFeInStorage nfe)
+    {
+        selectedNFe = nfe;
+    }
+
+    public void CloseModal()
+    {
+        selectedNFe = null;
+    }
 }
