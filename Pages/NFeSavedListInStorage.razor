@@ -11,68 +11,85 @@
 {
     <ul>
         @foreach (var nfe in nFesInStorage)
-        {
-            <li>@nfe.Directory</li>
-        <ul>
-            @if (nfe.NFe != null)
-            {
+        {   <ul class="py-3" style="border-bottom: 1px solid gray">
+                <button class="btn btn-primary">Editar</button>
+                <li>Diretório: @nfe.Directory</li>
+                <li>
+                    @if (!string.IsNullOrEmpty(nfe.Comentary))
+                    {
+                        <li class="fw-bold">
+                            Comentário:
+                            @nfe.Comentary
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="fw-bold">
+                            Não tem comentário.
+                        </li>
+                    }
+                </li>
                 <ul>
-                    <li>
+                    @if (nfe.NFe != null)
+                    {
                         <ul>
-                            <li>Id: @(nfe.NFe.Id)</li>
-                        @if (nfe.NFe.InfNFe != null)    
-                        {
-                            @if (nfe.NFe.InfNFe.Ide != null) 
-                            {
-                                <li>cUF: @nfe.NFe.InfNFe.Ide.cUF</li>
-                                <li>cNF: @nfe.NFe.InfNFe.Ide.cNF</li>  
-                            }
-
-                            @if (nfe.NFe.InfNFe.Emit != null) 
-                            {
-                                <li>Emitente: @nfe.NFe.InfNFe.Emit.xNome</li>
-                            }
-                            else
-                            {
-                                <li>Não tem emitente.</li>
-                            }
-                            
-                            @if (nfe.NFe.InfNFe.Dest != null) 
-                            {
-                                <li>Destinatário: @nfe.NFe.InfNFe.Dest.xNome</li>
-                            }
-                            else 
-                            {
-                                <li>Não tem destinatário.</li>
-                            }
-
-                            <li>Produtos:
+                            <li>
                                 <ul>
-                                    @if (nfe.NFe.InfNFe.Det != null) 
+                                    <li>Id: @(nfe.NFe.Id)</li>
+                                @if (nfe.NFe.InfNFe != null)    
+                                {
+                                    @if (nfe.NFe.InfNFe.Ide != null) 
                                     {
-                                        @foreach (var det in nfe.NFe.InfNFe.Det)
-                                        {
-                                            <li>
-                                                <ul>
-                                                    <li>cProd: @det.Prod.cProd</li>
-                                                    <li>xProd: @det.Prod.xProd</li>
-                                                    <li>qCom: @det.Prod.qCom</li>
-                                                </ul>
-                                            </li>
-                                        }
+                                        <li>cUF: @nfe.NFe.InfNFe.Ide.cUF</li>
+                                        <li>cNF: @nfe.NFe.InfNFe.Ide.cNF</li>  
                                     }
+
+                                    @if (nfe.NFe.InfNFe.Emit != null) 
+                                    {
+                                        <li>Emitente: @nfe.NFe.InfNFe.Emit.xNome</li>
+                                    }
+                                    else
+                                    {
+                                        <li>Não tem emitente.</li>
+                                    }
+                                    
+                                    @if (nfe.NFe.InfNFe.Dest != null) 
+                                    {
+                                        <li>Destinatário: @nfe.NFe.InfNFe.Dest.xNome</li>
+                                    }
+                                    else 
+                                    {
+                                        <li>Não tem destinatário.</li>
+                                    }
+
+                                    <li>Produtos:
+                                        <ul>
+                                            @if (nfe.NFe.InfNFe.Det != null) 
+                                            {
+                                                @foreach (var det in nfe.NFe.InfNFe.Det)
+                                                {
+                                                    <li>
+                                                        <ul>
+                                                            <li>cProd: @det.Prod.cProd</li>
+                                                            <li>xProd: @det.Prod.xProd</li>
+                                                            <li>qCom: @det.Prod.qCom</li>
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            }
+                                        </ul>
+                                    </li> 
+                                }
                                 </ul>
-                            </li> 
-                        }
+                            </li>
                         </ul>
-                    </li>
+                    }
+                    else
+                    {
+                        <p>NFe is null for this item.</p>
+                    }
                 </ul>
-            }
-            else
-            {
-                <p>NFe is null for this item.</p>
-            }
-        </ul>
+            </ul>
         }
     </ul>
 }
