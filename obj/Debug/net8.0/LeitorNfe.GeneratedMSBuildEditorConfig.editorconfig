@@ -22,6 +22,14 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Components/InfoNFeEditModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9JbmZvTkZlRWRpdE1vZGFsLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Components/Modal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9Nb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/nivs/Documents/prog/C\#/Tests/LeitorNfe/LeitorNfe/Components/WarningConfirmationSave.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50cy9XYXJuaW5nQ29uZmlybWF0aW9uU2F2ZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

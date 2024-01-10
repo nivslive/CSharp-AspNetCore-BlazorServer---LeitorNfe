@@ -1,0 +1,21 @@
+@using LeitorNfe.Core.Models
+
+<li>Diretório: @nfe.Directory</li>
+<li>
+    @if (!string.IsNullOrEmpty(nfe.Comentary))
+    {
+        <li class="fw-bold">
+            Comentário:
+            @nfe.Comentary
+        </li>
+    }
+    else
+    {
+        <li class="fw-bold">
+            Não tem comentário.
+        </li>
+    }
+</li>
+@code {
+    [Parameter] public NFeInStorage? nfe {get;set;}
+}
