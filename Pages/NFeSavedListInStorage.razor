@@ -116,7 +116,8 @@ else
         </BodyContent>
 
         <FooterContent>
-            <button type="button" class="btn btn-secondary" @onclick="CloseModal">Fechar</button>
+            <button type="button" class="btn btn-primary" @onclick="UpdateNFe">Salvar</button>
+            <button type="button" class="btn btn-danger" @onclick="CloseModal">Fechar</button>
         </FooterContent>
 
     </Modal>
@@ -126,6 +127,7 @@ else
     [Inject] private INFeInStorageService NFeInStorageService { get; set; }
     private List<NFeInStorage> nFesInStorage;
     private NFeInStorage selectedNFe;
+    private EditNFeInStorageForm editNFeInStorageForm;
 
 
     protected override async Task OnInitializedAsync()
@@ -133,6 +135,14 @@ else
         var response = await NFeInStorageService.GetNFes();
         nFesInStorage = response?.NFesInStorage;
         nFesInStorage = nFesInStorage.ToList();
+    }
+
+    public async Task UpdateNFe()
+    {
+        EditNFeInStorageForm editNFeInStorageForm = new(){
+            NFeInStorage = selectedNFe
+        };
+        await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
     }
 
     public void EditNFe(NFeInStorage nfe)

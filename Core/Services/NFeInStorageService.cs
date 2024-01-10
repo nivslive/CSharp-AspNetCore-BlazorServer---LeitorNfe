@@ -159,7 +159,7 @@ public class NFeInStorageService : INFeInStorageService
         try
         {
             using var context = _factory.CreateDbContext();
-            context.Update(nfe.NFeInStorage);
+            context.NFesInStorage.Update(nfe.NFeInStorage);
             var result = await context.SaveChangesAsync();
             if(result == 1)
             {
