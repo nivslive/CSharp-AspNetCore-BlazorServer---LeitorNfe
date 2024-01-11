@@ -11,7 +11,7 @@ sudo docker run --platform linux/amd64 -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=
    -d \
    mcr.microsoft.com/mssql/server:2022-latest
 
-## 2. Não esqueça de mudar a senha, de acordo com o que está vinculado no appsetttings
+### 2. Não esqueça de mudar a senha, de acordo com o que está vinculado no appsetttings
 Em LeitorNfe/appsettings.json, haverá o seguinte dado:
 
   "ConnectionStrings": {
