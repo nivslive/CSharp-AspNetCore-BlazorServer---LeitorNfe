@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LeitorNfe\LeitorNfe.csproj" />
+  </ItemGroup>
+
 </Project>

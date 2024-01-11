@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 using Xunit;
+using LeitorNfe.Core.Models;
 
 namespace LeitorNfe.XML.Tests
 {
@@ -9,7 +10,7 @@ namespace LeitorNfe.XML.Tests
     {
 
         [Fact]
-        public void CanSerializeNFeObjectTest()
+        public void CanSerializeNFeObject()
         {
             // Arrange
             var nfe = new NFe
@@ -71,7 +72,6 @@ namespace LeitorNfe.XML.Tests
                             X509Certificate = "xyz456",
                         },
                     },
-                    Id = "SignatureId",
                 },
             };
 

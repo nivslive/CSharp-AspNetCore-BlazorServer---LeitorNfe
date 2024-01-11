@@ -1,16 +1,16 @@
-using NUnit.Framework;
+using Xunit;
 using System.IO;
+using LeitorNfe.Core.Models;
 
 namespace LeitorNfe.XML.Tests
 {
-    [TestFixture]
     public class CanDeserializeNFeXmlTest
     {
-        [Test]
-        public void CanDeserializeNFeXmlTest()
+        [Fact]
+        public void CanDeserializeNFeXml()
         {
             // Arrange
-            string xmlFilePath = "wwwroot/XML/000000024.xml";
+            string xmlFilePath = Path.Combine( "..", "..",  "..", "..", "LeitorNfe", "wwwroot", "XML", "000038971.xml");
             var serializer = new System.Xml.Serialization.XmlSerializer(typeof(NFe));
 
             // Act
@@ -22,8 +22,8 @@ namespace LeitorNfe.XML.Tests
             }
 
             // Assert
-            Assert.IsNotNull(result);
-            Assert.IsNotNull(result.InfNFe);
+            Assert.NotNull(result);
+            Assert.NotNull(result.InfNFe);
         }
     }
 }
