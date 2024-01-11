@@ -101,6 +101,7 @@
     private LeitorNfe.Utils.XMLUtils XMLUtils;
 
     private NFe xmlData;
+    private string xmlDataString;
     private List<IBrowserFile> loadedFiles = new();
     private long maxFileSize = 1024 * 15;
     private int maxAllowedFiles = 1;
@@ -110,6 +111,15 @@
 
 
     private async Task SendUpdatedNFeFromXML(){
+
+        if(!string.IsNullOrEmpty(nfe.Directory)) {
+            if (File.Exists(nfe.Directory))
+            {
+                File.Delete(nfe.Directory);
+                await File.WriteAllTextAsync(nfe.Directory, xmlDataString);
+            }
+        }
+
         xmlData.Id = nfe.NFe.Id;
         NFeInStorage nfeInStorage = new(){
                 Id = nfe.Id,
@@ -124,7 +134,7 @@
             NFeInStorage = nfeInStorage
         };
 
-        Console.WriteLine("NAME: " + editNFeInStorageForm.NFeInStorage.NFe.InfNFe.Dest.xNome);
+        // Console.WriteLine("NAME: " + editNFeInStorageForm.NFeInStorage.NFe.InfNFe.Dest.xNome);
         
         await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
     }
@@ -143,7 +153,8 @@
                 using var reader = new StreamReader(stream);
                 var xmlString = await reader.ReadToEndAsync();
                 xmlData = XmlService.ReadXMLAndConvertToObject(xmlString).First();
-//                Console.WriteLine(xmlData.InfNFe.Dest.xNome);
+                xmlDataString = xmlString;
+            //  Console.WriteLine(xmlData.InfNFe.Dest.xNome);
             }
             catch (Exception ex)
             {
