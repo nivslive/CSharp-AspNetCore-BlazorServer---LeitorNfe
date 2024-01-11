@@ -6,11 +6,11 @@
 
     <p>
         <label>
-            <InputFile OnChange="@OverwriteSavedNFe"/>
+            <InputFile OnChange="@LoadFiles"/>
         </label>
         @if(inputFileEditOnChange)
         {
-            <button OnClick="@OverwriteSavedNFe">Salvar NFe</button>
+            <button @onclick="SendUpdatedNFeFromXML">Salvar NFe</button>
         }  
     </p>
 
@@ -100,19 +100,66 @@
     
     private LeitorNfe.Utils.XMLUtils XMLUtils;
 
-
+    private NFe xmlData;
     private List<IBrowserFile> loadedFiles = new();
     private long maxFileSize = 1024 * 15;
     private int maxAllowedFiles = 1;
     private bool isLoading;
     private bool inputFileEditOnChange = false;
 
-    private async void OverwriteSavedNFe()
+
+
+    private async Task SendUpdatedNFeFromXML(){
+                        
+        NFeInStorage nfeInStorage = new(){
+                NFe = xmlData,
+                Directory = nfe.Directory,
+                Comentary = nfe.Comentary
+        };
+        
+        nfe = nfeInStorage;
+
+        EditNFeInStorageForm editNFeInStorageForm = new(){
+            NFeInStorage = nfeInStorage
+        };
+
+        Console.WriteLine("NAME: " + editNFeInStorageForm.NFeInStorage.NFe.InfNFe.Dest.xNome);
+        
+        await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
+    }
+
+    private async void LoadFiles(InputFileChangeEventArgs e)
+    {
+        isLoading = true;
+        loadedFiles.Clear();
+        inputFileEditOnChange = true;
+        foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
+        {
+            try
+            {
+                loadedFiles.Add(file);
+                using var stream = e.File.OpenReadStream();
+                using var reader = new StreamReader(stream);
+                var xmlString = await reader.ReadToEndAsync();
+                xmlData = XmlService.ReadXMLAndConvertToObject(xmlString).First();
+//                Console.WriteLine(xmlData.InfNFe.Dest.xNome);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("File: {FileName} Error: {Error}", 
+                    file.Name, ex.Message);
+            }
+        }
+
+        isLoading = false;
+    }
+
+    private async void OverwriteSavedNFe(InputFileChangeEventArgs e)
     {
         inputFileEditOnChange = true;
         try
         {
-            foreach (var file in loadedFiles)
+            foreach (var file in e.GetMultipleFiles(maxAllowedFiles))
             {
                 if(!string.IsNullOrEmpty(nfe.Directory)) {
                     if (File.Exists(nfe.Directory))
@@ -126,7 +173,7 @@
                 // Cria o diretório se não existir
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-                using var stream = file.OpenReadStream();
+                using var stream = e.File.OpenReadStream();
                 using var reader = new StreamReader(stream);
                 var xmlString = await reader.ReadToEndAsync();
 
