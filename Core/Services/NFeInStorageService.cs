@@ -11,7 +11,7 @@ public interface INFeInStorageService
 {
     Task<GetNFesInStorageResponse> GetNFes();
     Task<AddNFeInStorageResponse> AddNFe(AddNFeInStorageForm AddNFeForm);
-    Task<BaseResponse> DeleteNFe(NFe nfe);
+    Task<BaseResponse> DeleteNFe(NFeInStorage nfe);
     Task<UpdateNFeInStorageResponse> UpdateNFe(EditNFeInStorageForm nfe);
     Task<GetNFeResponse> GetNFe(int id);
 }
@@ -55,8 +55,6 @@ public class NFeInStorageService : INFeInStorageService
                     .ThenInclude(m => m.InfNFe)
                     .ThenInclude(n => n.Det)   // Inclui a propriedade de navegação Det dentro de InfNfe
                     .ThenInclude(n => n.Prod)   // Inclui a propriedade de navegação Prod dentro de Det
-
-
 
                     .Include(m => m.NFe)
                     .ThenInclude(m => m.InfNFe)
@@ -125,7 +123,7 @@ public class NFeInStorageService : INFeInStorageService
         return response;
     }
 
-    public async Task<BaseResponse> DeleteNFe(NFe nfe)
+    public async Task<BaseResponse> DeleteNFe(NFeInStorage nfe)
     {
         BaseResponse response = new();
         try

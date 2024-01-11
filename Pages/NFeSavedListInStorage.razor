@@ -7,11 +7,18 @@
 @using Microsoft.AspNetCore.Components
 @using LeitorNfe.Components
 <h3>NFe In Storage List</h3>
-
+<div class="form-floating mb-3">
+    <input @oninput="FilterNFesByEmit" type="text" class="form-control" id="floatingInput" placeholder="Name here">
+    <label for="floatingInput">Search NFe By Emit Name</label>
+</div>
+<div class="form-floating mb-3">
+    <input @oninput="FilterNFesByDest" type="text" class="form-control" id="floatingInput" placeholder="Name here">
+    <label for="floatingInput">Search NFe By Dest Name</label>
+</div>
 @if (nFesInStorage != null && nFesInStorage.Any())
 {
     <ul>
-        @foreach (var nfe in nFesInStorage)
+        @foreach (var nfe in nFesInStorageFiltered)
         {   <ul class="py-3" style="border-bottom: 1px solid gray">
                 <button class="btn btn-primary" @onclick="(e => EditNFe(nfe))">Editar</button>
 
@@ -100,8 +107,29 @@ else
     <p>No NFes in storage.</p>
 }
 
+@if(SwitchConfirmationModal)
+{
+   <Modal>
 
-@if (selectedNFe != null)
+        <HeaderContent>
+            <h5 class="modal-title">Detalhes da NFe</h5>
+            <button type="button" class="close" @onclick="CloseModal">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </HeaderContent>
+
+        <BodyContent>
+            <h4>Deseja apagar o NFe @selectedNFeInStorage.Id do diretório @selectedNFeInStorage.Directory ?</h4>
+        </BodyContent>
+
+        <FooterContent>
+            <button type="button" class="btn btn-danger" @onclick="DeleteNFe">Deletar NFe</button>
+            <button type="button" class="btn btn-warning" @onclick="CloseDeleteConfirmationModal">Fechar</button>
+        </FooterContent>
+
+    </Modal>  
+}
+@if (SwitchModalSelectedNFeInStorage)
 {   <Modal>
 
         <HeaderContent>
@@ -112,12 +140,13 @@ else
         </HeaderContent>
 
         <BodyContent>
-            <InfoNFeEditModal nfe="selectedNFe"/>
+            <InfoNFeEditModal nfe="selectedNFeInStorage"/>
         </BodyContent>
 
         <FooterContent>
             <button type="button" class="btn btn-primary" @onclick="UpdateNFe">Salvar</button>
-            <button type="button" class="btn btn-danger" @onclick="CloseModal">Fechar</button>
+            <button type="button" class="btn btn-danger" @onclick="OpenDeleteConfirmationModal">Deletar NFe</button>
+            <button type="button" class="btn btn-warning" @onclick="CloseModal">Fechar</button>
         </FooterContent>
 
     </Modal>
@@ -126,35 +155,96 @@ else
 @code {
     [Inject] private INFeInStorageService NFeInStorageService { get; set; }
     private List<NFeInStorage> nFesInStorage;
-    private NFeInStorage selectedNFe;
+    private NFeInStorage selectedNFeInStorage;
     private EditNFeInStorageForm editNFeInStorageForm;
-
+    
+    //modal
+    private bool SwitchModalSelectedNFeInStorage = false;
+    private bool SwitchConfirmationModal = false;
+    
+    private List<NFeInStorage> nFesInStorageFiltered;
 
     protected override async Task OnInitializedAsync()
     {
         var response = await NFeInStorageService.GetNFes();
         nFesInStorage = response?.NFesInStorage;
         nFesInStorage = nFesInStorage.ToList();
+        nFesInStorageFiltered = nFesInStorage;
     }
 
     public async Task UpdateNFe()
     {
         EditNFeInStorageForm editNFeInStorageForm = new(){
-            NFeInStorage = selectedNFe
+            NFeInStorage = selectedNFeInStorage
         };
         await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
     }
 
+    public async Task DeleteNFe() 
+    {
+        try {
+            await NFeInStorageService.DeleteNFe(selectedNFeInStorage);
+            nFesInStorageFiltered = nFesInStorage.Where(e => e.Id != selectedNFeInStorage.Id).ToList();
+            CloseDeleteConfirmationModal();
+            StateHasChanged();
+        } catch(Exception ex) 
+        {
+            Console.WriteLine("Err:" + ex.Message);
+        }
+
+    }
+
     public void EditNFe(NFeInStorage nfe)
     {
-        selectedNFe = nfe;
+        selectedNFeInStorage = nfe;
+        SwitchModalSelectedNFeInStorage = true;
+    }
+
+    public void OpenDeleteConfirmationModal()
+    {
+        SwitchModalSelectedNFeInStorage = false;
+        SwitchConfirmationModal = true;
+    }
+
+    public void CloseDeleteConfirmationModal()
+    {
+
+        SwitchConfirmationModal = false;
     }
 
     public void CloseModal()
     {
-        selectedNFe = null;
+        selectedNFeInStorage = null;
+        SwitchModalSelectedNFeInStorage = false;
     }
 
 
+    public void FilterNFesByEmit(ChangeEventArgs e) 
+    {
+        if(string.IsNullOrWhiteSpace(e.Value?.ToString()))
+        {
+            nFesInStorageFiltered = nFesInStorage.ToList(); // Revert to the original list
+        }
+        else
+        {
+            nFesInStorageFiltered = nFesInStorage
+                .Where(x => x.NFe.InfNFe?.Emit?.xNome.IndexOf(e.Value.ToString(), StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToList();
+        }
+    }
+
+    public void FilterNFesByDest(ChangeEventArgs e) 
+    {
+        if(string.IsNullOrWhiteSpace(e.Value?.ToString()))
+        {
+            nFesInStorageFiltered = nFesInStorage.ToList(); // Revert to the original list
+        }
+        else
+        {
+            nFesInStorageFiltered = nFesInStorage
+                .Where(x => x.NFe.InfNFe?.Dest?.xNome.IndexOf(e.Value.ToString(), StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToList();
+        }
+    }
 
 }

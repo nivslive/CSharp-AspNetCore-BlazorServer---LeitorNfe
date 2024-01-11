@@ -5,9 +5,13 @@
 <li>
 
     <p>
-    <label>
-        <InputFile OnChange="@OverwriteSavedNFe"/>
+        <label>
+            <InputFile OnChange="@OverwriteSavedNFe"/>
         </label>
+        @if(inputFileEditOnChange)
+        {
+            <button OnClick="@OverwriteSavedNFe">Salvar NFe</button>
+        }  
     </p>
 
     @if (!string.IsNullOrEmpty(nfe.Comentary))
@@ -101,9 +105,11 @@
     private long maxFileSize = 1024 * 15;
     private int maxAllowedFiles = 1;
     private bool isLoading;
+    private bool inputFileEditOnChange = false;
 
     private async void OverwriteSavedNFe()
     {
+        inputFileEditOnChange = true;
         try
         {
             foreach (var file in loadedFiles)
@@ -127,20 +133,23 @@
 
                 await File.WriteAllTextAsync(filePath, xmlString);
                 
+                
                 var NFeObject = XmlService.ReadXMLAndConvertToObject(xmlString);
-
-                EditNFeInStorageForm editNFeInStorageForm = new(){
-                    NFeInStorage = new NFeInStorage {
+                
+                NFeInStorage nfeInStorage = new(){
                         NFe = NFeObject.First(),
                         Directory = filePath,
                         Comentary = nfe.Comentary
-                    }
                 };
-
+                
+                nfe = nfeInStorage;
+                EditNFeInStorageForm editNFeInStorageForm = new(){
+                    NFeInStorage = nfeInStorage
+                };
                 await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
             }
-
-            Console.WriteLine("NFe saved successfully!");
+            StateHasChanged();
+            Console.WriteLine("NFe updated successfully!");
         }
         catch (Exception ex)
         {
