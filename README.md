@@ -28,7 +28,7 @@ coloque em Password={} o que foi colocado no comando do terminal para subir a im
 cd LeitorNfe
 
 ### 2. Atualize as dependências usando o dotnet:
-dotnet 
+dotnet restore
 
 ### 3. Execute as migrações do banco de dados para criar as tabelas necessárias:
 dotnet ef database update
