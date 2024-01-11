@@ -1,6 +1,6 @@
 # TaskManagement - README
 
-Esta aplicação web está usando como tecnologia:
+Esta aplicação web foi desenvolvida para um Teste e está usando como tecnologia:
 no frontend Blazor Server, e no backend ASP.NET Core.
 
 ## Instruções para subir o Database (usando Docker)
