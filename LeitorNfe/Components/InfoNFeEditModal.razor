@@ -110,8 +110,9 @@
 
 
     private async Task SendUpdatedNFeFromXML(){
-                        
+        xmlData.Id = nfe.NFe.Id;
         NFeInStorage nfeInStorage = new(){
+                Id = nfe.Id,
                 NFe = xmlData,
                 Directory = nfe.Directory,
                 Comentary = nfe.Comentary
@@ -154,7 +155,7 @@
         isLoading = false;
     }
 
-    private async void OverwriteSavedNFe(InputFileChangeEventArgs e)
+/**    private async void OverwriteSavedNFe(InputFileChangeEventArgs e)
     {
         inputFileEditOnChange = true;
         try
@@ -203,5 +204,5 @@
             Console.WriteLine($"Error saving NFe: {ex.Message}");
         }
     }
-
+**/
 }
