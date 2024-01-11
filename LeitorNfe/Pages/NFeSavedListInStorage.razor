@@ -174,10 +174,16 @@ else
 
     public async Task UpdateNFe()
     {
-        EditNFeInStorageForm editNFeInStorageForm = new(){
-            NFeInStorage = selectedNFeInStorage
-        };
-        await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
+        try {
+            EditNFeInStorageForm editNFeInStorageForm = new(){
+                NFeInStorage = selectedNFeInStorage
+            };
+            await NFeInStorageService.UpdateNFe(editNFeInStorageForm);
+            CloseModal();
+        } catch(Exception ex) 
+        {
+            Console.WriteLine("Err:" + ex.Message);
+        }
     }
 
     public async Task DeleteNFe() 
