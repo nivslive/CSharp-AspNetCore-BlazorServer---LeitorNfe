@@ -6,6 +6,17 @@ using System.Xml;
 namespace LeitorNfe.Core.Models;
 
 
+[XmlRoot(ElementName = "nfeProc", Namespace = "http://www.portalfiscal.inf.br/nfe")]
+public class NFeProc
+{
+    public int Id {get; set;}
+    
+    [XmlElement(ElementName = "NFe")]
+    public NFe? NFe { get; set; }
+
+}
+
+
 [XmlRoot(ElementName = "NFe", Namespace = "http://www.portalfiscal.inf.br/nfe")]
 public class NFe
 {
