@@ -38,5 +38,14 @@ dotnet ef database update
 dotnet watch run
 
 
+## Instruções para os Tests
+
+### 1. Navegue até a pasta de Testes da aplicação:
+cd LeitorNfe.Tests
+
+### 2. Atualize as dependências usando o dotnet:
+dotnet test
+
+
 ## PRINTS
 <img src="https://img001.prntscr.com/file/img001/H0mcglhRSOCBC6DUpu9gXA.png">
