@@ -6,6 +6,7 @@
 @using LeitorNfe.Core.Models.DTOs
 @using LeitorNfe.Core.Services
 @using System.Xml.Serialization
+@using LeitorNfe.Utils
 @using LeitorNfe.Components
 @* <PageTitle>File Upload</PageTitle> *@
 
@@ -113,7 +114,7 @@ else
 @code {
     private List<NFe>? xmlData;
     private string? uploadedFileName;
-
+    private XMLUtils xmlUtils = new();
     private AddNFeInStorageForm AddNFeInStorageForm;
     //[Inject] private IXmlService xmlService { get; set; }
     private List<IBrowserFile> loadedFiles = new();
@@ -163,7 +164,7 @@ else
         {
             foreach (var file in loadedFiles)
             {
-                var filePath = GetFilePath();
+                var filePath = xmlUtils.GetFilePath();
                 
                 // Cria o diretório se não existir
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
@@ -199,12 +200,6 @@ else
         CloseConfirmationSaveModal();
     }
 
-    private string GetFilePath()
-    {
-        string folderPath = "wwwroot/storage/nfe";
-        return Path.Combine(folderPath, GetUniqueFileName(folderPath, "xml"));
-    }
-
     private string SerializeNFe(List<NFe> nfeList)
     {
         var serializer = new XmlSerializer(typeof(List<NFe>));
@@ -214,18 +209,6 @@ else
             serializer.Serialize(writer, nfeList);
             return writer.ToString();
         }
-    }
-
-    private string GetUniqueFileName(string folderPath, string extension)
-    {
-        int number = 1;
-        string newFileName = $"{number}.{extension}";
-        while (File.Exists(Path.Combine(folderPath, newFileName)))
-        {
-            number++;
-            newFileName = $"{number}.{extension}";
-        }
-        return newFileName;
     }
 
     private async void LoadFiles(InputFileChangeEventArgs e)
